@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Pokladna
 {
@@ -36,6 +37,18 @@ namespace Pokladna
             Castka = castka;
             Zustatek = zustatek;
             Poznamka = poznamka;
+        }
+
+        public ListViewItem DolvItem()
+        {
+            if(Castka>0)
+            {
+                return new ListViewItem(new string[] { Datum.ToString("dd.MM.yyyy"), CisloDokladu.ToString(),Popis,Castka.ToString(),"",Zustatek.ToString(),Poznamka});
+            }
+            else
+            {
+                return new ListViewItem(new string[] { Datum.ToString("dd.MM.yyyy"), CisloDokladu.ToString(), Popis,"", Math.Abs(Castka).ToString(), Zustatek.ToString(), Poznamka });
+            }
         }
     }
 }
