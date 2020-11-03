@@ -88,6 +88,19 @@
             // 
             this.comboBoxMesic.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxMesic.FormattingEnabled = true;
+            this.comboBoxMesic.Items.AddRange(new object[] {
+            "Leden",
+            "Únor",
+            "Březen",
+            "Duben",
+            "Květen",
+            "Červen",
+            "Červenec",
+            "Srpen",
+            "Září",
+            "Říjen",
+            "Listopad",
+            "Prosinec"});
             this.comboBoxMesic.Location = new System.Drawing.Point(63, 51);
             this.comboBoxMesic.Name = "comboBoxMesic";
             this.comboBoxMesic.Size = new System.Drawing.Size(121, 21);
@@ -98,6 +111,10 @@
             // 
             this.comboBoxRok.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxRok.FormattingEnabled = true;
+            this.comboBoxRok.Items.AddRange(new object[] {
+            "2019",
+            "2020",
+            "2021"});
             this.comboBoxRok.Location = new System.Drawing.Point(63, 24);
             this.comboBoxRok.Name = "comboBoxRok";
             this.comboBoxRok.Size = new System.Drawing.Size(121, 21);

@@ -8,6 +8,11 @@ namespace Pokladna
 {
     class XmlRepos : IRepos
     {
+        public List<PokladniZaznam> NactiMesic(int rok, int mesic)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<PokladniZaznam> NactiVse()
         {
             throw new NotImplementedException();
