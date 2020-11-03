@@ -38,6 +38,14 @@ namespace Pokladna
             return data;
         }
 
+        public List<PokladniZaznam> NactiMesic(int rok, int mesic)
+        {
+            List<PokladniZaznam> data = NactiVse();
+            data = NactiVse().FindAll(prvek => prvek.Datum.Year == rok && prvek.Datum.Month == mesic);
+            data.Sort((a, b) => a.Datum.CompareTo(b.Datum));
+            return data;
+        }
+
         public PokladniZaznam NactiZaznam(int idPokladniZaznam)
         {
             throw new NotImplementedException();
@@ -55,7 +63,53 @@ namespace Pokladna
 
         public PokladniZaznam VytvorZaznam(PokladniZaznam pokladniZaznam)
         {
-            throw new NotImplementedException();
+            List<PokladniZaznam> data = NactiVse();
+            if(data.Find(doklad => doklad.Datum > pokladniZaznam.Datum) == null)
+            {
+                data.Sort((a, b) => a.IdPokladniZaznam.CompareTo(b.IdPokladniZaznam));
+                pokladniZaznam.IdPokladniZaznam = data.Last().IdPokladniZaznam + 1;
+                data.Sort((a, b) => a.Datum.CompareTo(b.Datum));
+                if(data.Last().Datum.Month == pokladniZaznam.Datum.Month)
+                {
+                    pokladniZaznam.CisloDokladu = data.Last().CisloDokladu + 1;
+                }
+                else
+                {
+                    pokladniZaznam.CisloDokladu = 1;
+                }
+                pokladniZaznam.Zustatek = data.Last().Zustatek + pokladniZaznam.Castka;
+            }
+            else
+            {
+                data.Sort((a, b) => a.IdPokladniZaznam.CompareTo(b.IdPokladniZaznam));
+                pokladniZaznam.IdPokladniZaznam = data.Last().IdPokladniZaznam + 1;
+                List<PokladniZaznam> dataMesice = data.FindAll(doklad => doklad.Datum.Year == pokladniZaznam.Datum.Year && doklad.Datum.Month == pokladniZaznam.Datum.Month);
+                dataMesice.Sort((a, b) => a.CisloDokladu.CompareTo(b.CisloDokladu));
+                if(dataMesice.Count > 0)
+                {
+                    if(dataMesice.Find(doklad => doklad.Datum > pokladniZaznam.Datum) == null)
+                    {
+                        pokladniZaznam.CisloDokladu = dataMesice.Last().CisloDokladu + 1;
+                    }
+                    else
+                    {
+                        int index = dataMesice.FindIndex(doklad => doklad.Datum > pokladniZaznam.Datum);
+                        pokladniZaznam.CisloDokladu = dataMesice[index].CisloDokladu;
+                        for(int i = index; i < dataMesice.Count; i++)
+                        {
+                            dataMesice[i].CisloDokladu += 1;
+                        }
+                    }
+                }
+                else
+                {
+                    pokladniZaznam.CisloDokladu = 1;
+                }
+            }
+            data.Add(pokladniZaznam);
+            string json = JsonConvert.SerializeObject(data);
+            File.WriteAllText(datovySoubor, json);
+            return pokladniZaznam;
         }
     }
 }

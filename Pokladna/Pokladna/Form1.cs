@@ -22,15 +22,61 @@ namespace Pokladna
         private void Form1_Load(object sender, EventArgs e)
         {
             JasonRepos jasonRepos = new JasonRepos("data.Json");
-            jasonRepos.VytvorTestData();
+            //jasonRepos.VytvorTestData();
             repositar = jasonRepos;
-            //repositar = new SqlRepos();
-            //repositar = new XmlRepos();
+
+            comboBoxRok.SelectedIndex = comboBoxRok.Items.IndexOf(DateTime.Now.Year.ToString());
+            comboBoxMesic.SelectedIndex = DateTime.Now.Month - 1;
+            /*repositar = new SqlRepos();
+            repositar = new XmlRepos();
             pokladna = repositar.NactiVse();
             foreach (var p in pokladna)
             {
                 lvData.Items.Add(p.DolvItem());
+            }*/
+        }
+
+        private void comboBoxRok_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            NactiDataAktMesic();
+        }
+
+        private void NactiDataAktMesic()
+        {
+            if(comboBoxRok.SelectedIndex >= 0 && comboBoxMesic.SelectedIndex >=0)
+            {
+                pokladna = repositar.NactiMesic(int.Parse(comboBoxRok.SelectedItem.ToString()), comboBoxMesic.SelectedIndex + 1);
+                lvData.Items.Clear();
+                foreach(var p in pokladna)
+                {
+                    lvData.Items.Add(p.DolvItem());
+                }
             }
+        }
+
+        private void textBoxCislo_TextChanged(object sender, EventArgs e)
+        {
+            buttonUlozit.Enabled = textBoxCislo.Text != "";
+        }
+
+        private void textBoxPopis_TextChanged(object sender, EventArgs e)
+        {
+            buttonUlozitJako.Enabled = textBoxPopis.Text.Trim() != "" && numericUpDownCastka.Value != 0;
+        }
+
+        private void numericUpDownCastka_ValueChanged(object sender, EventArgs e)
+        {
+            buttonUlozitJako.Enabled = textBoxPopis.Text.Trim() != "" && numericUpDownCastka.Value != 0;
+        }
+
+        private void buttonUlozitJako_Click(object sender, EventArgs e)
+        {
+            PokladniZaznam novyZaznam = new PokladniZaznam(dateTimePickerDatum.Value, textBoxPopis.Text, (double)numericUpDownCastka.Value, textBoxPoznamka.Text);
+            repositar.VytvorZaznam(novyZaznam);
+            NactiDataAktMesic();
+            textBoxPopis.Text = "";
+            numericUpDownCastka.Value = 0;
+            textBoxPoznamka.Text = "";
         }
     }
 }

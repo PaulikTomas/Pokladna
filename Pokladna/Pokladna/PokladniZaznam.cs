@@ -39,6 +39,17 @@ namespace Pokladna
             Poznamka = poznamka;
         }
 
+        public PokladniZaznam(DateTime datum, string popis, double castka, string poznamka)
+        {
+            IdPokladniZaznam = -1;
+            CisloDokladu = -1;
+            Datum = datum;
+            Popis = popis;
+            Castka = castka;
+            Zustatek = -1;
+            Poznamka = poznamka;
+        }
+
         public ListViewItem DolvItem()
         {
             if(Castka>0)
