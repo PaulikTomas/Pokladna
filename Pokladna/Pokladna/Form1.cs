@@ -23,7 +23,10 @@ namespace Pokladna
         {
             JasonRepos jasonRepos = new JasonRepos("data.Json");
             //jasonRepos.VytvorTestData();
-            repositar = jasonRepos;
+            SqlRepos sqlRepos = new SqlRepos();
+            //sqlRepos.VytvorTestData(jasonRepos.NactiVse());
+
+            repositar = sqlRepos;
 
             comboBoxRok.SelectedIndex = comboBoxRok.Items.IndexOf(DateTime.Now.Year.ToString());
             comboBoxMesic.SelectedIndex = DateTime.Now.Month - 1;
